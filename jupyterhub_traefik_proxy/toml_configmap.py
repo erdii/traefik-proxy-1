@@ -1,15 +1,10 @@
 """Traefik implementation
-
 Custom proxy implementations can subclass :class:`Proxy`
 and register in JupyterHub config:
-
 .. sourcecode:: python
-
     from mymodule import MyProxy
     c.JupyterHub.proxy_class = MyProxy
-
 Route Specification:
-
 - A routespec is a URL prefix ([host]/path/), e.g.
   'host.tld/path/' for host-based routing or '/path/' for default routing.
 - Route paths should be normalized to always start and end with '/'
@@ -74,19 +69,15 @@ class TraefikTomlConfigmapProxy(TraefikProxy):
 
     async def add_route(self, routespec, target, data):
         """Add a route to the proxy.
-
         **Subclasses must define this method**
-
         Args:
             routespec (str): A URL prefix ([host]/path/) for which this route will be matched,
                 e.g. host.name/path/
             target (str): A full URL that will be the target of this route.
             data (dict): A JSONable dict that will be associated with this route, and will
                 be returned when retrieving information about this route.
-
         Will raise an appropriate Exception (FIXME: find what?) if the route could
         not be added.
-
         The proxy implementation should also have a way to associate the fact that a
         route came from JupyterHub.
         """
@@ -118,7 +109,6 @@ class TraefikTomlConfigmapProxy(TraefikProxy):
 
     async def delete_route(self, routespec):
         """Delete a route with a given routespec if it exists.
-
         **Subclasses must define this method**
         """
         routespec = self._routespec_to_traefik_path(routespec)
@@ -133,12 +123,9 @@ class TraefikTomlConfigmapProxy(TraefikProxy):
     async def get_all_routes(self):
         """Fetch and return all the routes associated by JupyterHub from the
         proxy.
-
         **Subclasses must define this method**
-
         Should return a dictionary of routes, where the keys are
         routespecs and each value is a dict of the form::
-
           {
             'routespec': the route specification ([host]/path/)
             'target': the target host URL (proto://host) for this route
@@ -311,7 +298,6 @@ class TraefikTomlConfigmapProxy(TraefikProxy):
 
     async def _check_pod_for_traefik_endpoint(self, routespec, kind, pod_ip):
         """Check for an expected frontend or backend in a single traefik pod
-
         This is used to wait for a single traefik pod to load configuration
         """
         expected = traefik_utils.generate_alias(routespec, kind)
